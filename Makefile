@@ -5,7 +5,7 @@ NAME	= philo
 SRC_PATH = src/
 OBJ_PATH = obj/
 
-SRC		= main.c validation.c atol.c parser_utils.c parser_and_initializer.c mutexes.c threads.c printers.c Philosophers.c
+SRC		= main.c validation.c atol.c parser_utils.c parser_and_initializer.c mutexes.c threads.c printers.c Philosophers.c logic_handler.c
 SRCS	= $(addprefix $(SRC_PATH), $(SRC))
 OBJ		= $(SRC:.c=.o)
 OBJS	= $(addprefix $(OBJ_PATH), $(OBJ))

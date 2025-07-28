@@ -6,7 +6,7 @@
 /*   By: ahirzall <ahirzall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 23:51:52 by ahirzall          #+#    #+#             */
-/*   Updated: 2025/07/28 23:51:53 by ahirzall         ###   ########.fr       */
+/*   Updated: 2025/07/29 00:24:31 by ahirzall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ typedef struct s_philosopher
 	int			id;
 	long		eaten_meals_counter;
 	bool		is_full;
-	long		last_meal_passed_time;
+	long		last_meal_time;
 	t_fork		*first_fork;
 	t_fork		*second_fork;
 	pthread_t	thread_id;
@@ -92,6 +92,9 @@ typedef	struct s_table
 	bool			is_simulation_ended;
 	bool			are_all_threads_ready;
 	long			threads_running_counter;
+	pthread_mutex_t	print_mutex;
+	pthread_mutex_t	data_mutex;
+	pthread_t		monitor_thread;
 	t_fork			*forks;
 	t_philosopher	*philosophers_arr;
 }					t_table;
@@ -109,6 +112,13 @@ int	safe_mutex_handle(pthread_mutex_t *mutex, t_operation_code opcode);
 int	safe_thread_handle(pthread_t *thread, void *(*foo)(void *), void *data, t_operation_code opcode);
 int		start_philos_dinner_sim(t_table *table);
 void	clean_table(t_table *table);
+void	assign_forks(t_philosopher *philo, t_fork *forks, int i);
+long	get_time(void);
+void	ft_usleep(long time);
+void	safe_print(t_philosopher *philo, char *action);
+int		philosopher_died(t_philosopher *philo);
+void	*philosopher_routine(void *arg);
+void	*monitor_routine(void *arg);
 
 
 #endif
