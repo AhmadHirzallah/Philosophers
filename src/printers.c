@@ -6,7 +6,7 @@
 /*   By: ahirzall <ahirzall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 23:52:17 by ahirzall          #+#    #+#             */
-/*   Updated: 2025/07/29 01:04:46 by ahirzall         ###   ########.fr       */
+/*   Updated: 2025/07/29 01:27:22 by ahirzall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,4 @@ void	print_success(const char *message)
 void	print_info(const char *message)
 {
 	printf(BLUE"%s"RESET"\n", message);
-}
-
-void	print_simulation_start(long philos_count)
-{
-	printf("\n" BOLD CYAN "🍽️  PHILOSOPHERS SIMULATION STARTED 🍽️" RESET "\n");
-	printf(BLUE"Philosophers count: "COLOR_ID"%ld"RESET"\n", philos_count);
-	printf(DIM"═══════════════════════════════════════════════"RESET"\n\n");
-}
-
-void	print_simulation_end(void)
-{
-	printf("\n" DIM"═══════════════════════════════════════════════"RESET"\n");
-	printf(BOLD YELLOW "🏁 SIMULATION ENDED 🏁" RESET "\n\n");
 }

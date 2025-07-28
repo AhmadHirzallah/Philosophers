@@ -6,7 +6,7 @@
 /*   By: ahirzall <ahirzall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 23:51:52 by ahirzall          #+#    #+#             */
-/*   Updated: 2025/07/29 01:04:46 by ahirzall         ###   ########.fr       */
+/*   Updated: 2025/07/29 01:27:22 by ahirzall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,41 +23,37 @@
 #include <errno.h>
 #include <string.h>
 
-// Professional Color Scheme for Philosophers
 # define RESET "\033[0m"
 # define BOLD "\033[1m"
 # define DIM "\033[2m"
 # define ITALIC "\033[3m"
 # define UNDERLINE "\033[4m"
 
-// Primary Colors
-# define RED "\033[31m"           // Errors and death
-# define GREEN "\033[32m"         // Success and valid input
-# define YELLOW "\033[33m"        // Warnings and thinking
-# define BLUE "\033[34m"          // Information and actions
-# define MAGENTA "\033[35m"       // Philosopher IDs
-# define CYAN "\033[36m"          // Time stamps
-# define WHITE "\033[37m"         // General text
+# define RED "\033[31m"
+# define GREEN "\033[32m"
+# define YELLOW "\033[33m"
+# define BLUE "\033[34m"
+# define MAGENTA "\033[35m"
+# define CYAN "\033[36m"
+# define WHITE "\033[37m"
 
-// Bright Colors for Better Visibility
-# define BRIGHT_RED "\033[91m"    // Critical errors
-# define BRIGHT_GREEN "\033[92m"  // Success messages
-# define BRIGHT_YELLOW "\033[93m" // Thinking state
-# define BRIGHT_BLUE "\033[94m"   // Eating state
-# define BRIGHT_MAGENTA "\033[95m"// Sleeping state
-# define BRIGHT_CYAN "\033[96m"   // Fork actions
-# define BRIGHT_WHITE "\033[97m"  // Timestamps
+# define BRIGHT_RED "\033[91m"
+# define BRIGHT_GREEN "\033[92m"
+# define BRIGHT_YELLOW "\033[93m"
+# define BRIGHT_BLUE "\033[94m"
+# define BRIGHT_MAGENTA "\033[95m"
+# define BRIGHT_CYAN "\033[96m"
+# define BRIGHT_WHITE "\033[97m"
 
-// Semantic Color Definitions for Actions
-# define COLOR_FORK BRIGHT_CYAN     // Fork taking
-# define COLOR_EAT BRIGHT_BLUE      // Eating
-# define COLOR_SLEEP BRIGHT_MAGENTA // Sleeping
-# define COLOR_THINK BRIGHT_YELLOW  // Thinking
-# define COLOR_DEATH BRIGHT_RED     // Death
-# define COLOR_TIME CYAN            // Timestamps
-# define COLOR_ID MAGENTA           // Philosopher IDs
-# define COLOR_SUCCESS BRIGHT_GREEN // Success messages
-# define COLOR_ERROR BRIGHT_RED     // Error messages
+# define COLOR_FORK BRIGHT_CYAN
+# define COLOR_EAT BRIGHT_BLUE
+# define COLOR_SLEEP BRIGHT_MAGENTA
+# define COLOR_THINK BRIGHT_YELLOW
+# define COLOR_DEATH BRIGHT_RED
+# define COLOR_TIME CYAN
+# define COLOR_ID MAGENTA
+# define COLOR_SUCCESS BRIGHT_GREEN
+# define COLOR_ERROR BRIGHT_RED
 
 typedef enum e_operation_code
 {
@@ -116,22 +112,21 @@ void	print_error(const char *error);
 void	print_error_exit(const char *error);
 void	print_success(const char *message);
 void	print_info(const char *message);
-void	print_simulation_start(long philos_count);
-void	print_simulation_end(void);
 int	start_program(char *argv[]);
 long	ft_atol(const char *str);
-int		table_initialization(t_table *table, char **argv);
+int	table_initialization(t_table *table, char **argv);
+void	parse_simulation_parameters(t_table *table, char **argv);
 void	*safe_malloc(size_t size);
 int	print_error_with_return(const char *error);
 int	safe_mutex_handle(pthread_mutex_t *mutex, t_operation_code opcode);
 int	safe_thread_handle(pthread_t *thread, void *(*foo)(void *), void *data, t_operation_code opcode);
-int		start_philos_dinner_sim(t_table *table);
+int	start_philos_dinner_sim(t_table *table);
 void	clean_table(t_table *table);
 void	assign_forks(t_philosopher *philo, t_fork *forks, int i);
 long	get_time(void);
 void	ft_usleep(long time);
 void	safe_print(t_philosopher *philo, char *action);
-int		philosopher_died(t_philosopher *philo);
+int	philosopher_died(t_philosopher *philo);
 void	*philosopher_routine(void *arg);
 void	*monitor_routine(void *arg);
 

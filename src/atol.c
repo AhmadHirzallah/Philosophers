@@ -6,67 +6,78 @@
 /*   By: ahirzall <ahirzall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 23:51:55 by ahirzall          #+#    #+#             */
-/*   Updated: 2025/07/28 23:51:56 by ahirzall         ###   ########.fr       */
+/*   Updated: 2025/07/29 01:17:02 by ahirzall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static inline int is_space(char c)
+/*
+** Checks if character is a whitespace character
+*/
+static int	is_whitespace(char character)
 {
-	return (c == ' ' || (c >= 9 && c <= 13));
+	return (character == ' ' || (character >= 9 && character <= 13));
 }
 
-static inline bool skip_spaces(const char *str, int *index )
+/*
+** Skips whitespace characters and returns true if string continues
+*/
+static int	skip_leading_whitespace(const char *str, int *index)
 {
-	while (is_space(str[*index]))
+	while (is_whitespace(str[*index]))
 		(*index)++;
 	return (str[*index] != '\0');
 }
 
-static inline bool get_sign(const char *str, int *index, long *signal)
+/*
+** Handles sign character and updates sign value and index
+*/
+static void	handle_sign_character(const char *str, int *index, long *sign)
 {
 	if (str[*index] == '-')
 	{
-		*signal = -1;
+		*sign = -1;
 		(*index)++;
-		return (true);
 	}
 	else if (str[*index] == '+')
 	{
 		(*index)++;
-		return (true);
 	}
-	return (false);
 }
 
-static inline bool calculate_number(const char *str, int *index, long *result)
+/*
+** Converts numeric characters to long integer
+*/
+static int	convert_digits_to_number(const char *str, int *index, long *result)
 {
 	*result = 0;
-
 	if (str[*index] < '0' || str[*index] > '9')
-		return (false);
+		return (0);
 	while (str[*index] >= '0' && str[*index] <= '9')
 	{
 		*result = *result * 10 + (str[*index] - '0');
 		(*index)++;
 	}
-	return true;
+	return (1);
 }
 
+/*
+** Converts string to long integer (custom implementation of atol)
+*/
 long	ft_atol(const char *str)
 {
-	int	i;
+	int		char_index;
 	long	result;
-	long	signal;
+	long	sign;
 
-	signal = 1;
-	i = 0;
-	if (!(skip_spaces(str, &i)))
+	sign = 1;
+	char_index = 0;
+	if (!skip_leading_whitespace(str, &char_index))
 		return (0);
-	if ((str[i] == '+' || str[i] == '-'))
-		get_sign(str, &i, &signal);
-	if (!(calculate_number(str, &i, &result)))
+	if (str[char_index] == '+' || str[char_index] == '-')
+		handle_sign_character(str, &char_index, &sign);
+	if (!convert_digits_to_number(str, &char_index, &result))
 		return (0);
-	return (result * signal);
+	return (result * sign);
 }

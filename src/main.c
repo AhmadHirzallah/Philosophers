@@ -6,66 +6,73 @@
 /*   By: ahirzall <ahirzall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 23:51:57 by ahirzall          #+#    #+#             */
-/*   Updated: 2025/07/29 01:04:46 by ahirzall         ###   ########.fr       */
+/*   Updated: 2025/07/29 01:17:02 by ahirzall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static inline int	is_valid_digit(int nbr, int is_first_char)
+/*
+** Checks if a character is a valid digit or '+' sign at the beginning
+*/
+static int	is_valid_character(int character, int is_first_position)
 {
-	if (is_first_char && nbr == '+')
+	if (is_first_position && character == '+')
 		return (1);
-	return ((nbr >= '0' && nbr <= '9'));
+	return (character >= '0' && character <= '9');
 }
 
 /*
-	- counter : = 1 sent
+** Validates that all arguments are numeric strings
 */
-static inline int invalid_as_numbers(int argc, char *argv[], int arg_word_counter)
+static int	validate_numeric_arguments(int argc, char *argv[])
 {
+	int	arg_index;
 	int	char_index;
 
-	while (arg_word_counter < argc)
+	arg_index = 1;
+	while (arg_index < argc)
 	{
 		char_index = 0;
-		while (argv[arg_word_counter][char_index])  // Check until null terminator
+		while (argv[arg_index][char_index])
 		{
-			if (!(is_valid_digit(argv[arg_word_counter][char_index], (char_index == 0))))
+			if (!is_valid_character(argv[arg_index][char_index],
+				(char_index == 0)))
 			{
 				print_error("Error: Invalid Input Not A Number\n"
-							COLOR_SUCCESS"Valid Input is: ./philo [PhilosophersNumber] [TimeToDie] [TimeToEat] [TimeToSleep] [OPT:EatingTimes]"RESET);
+					COLOR_SUCCESS"Valid Input is: ./philo [PhilosophersNumber] "
+					"[TimeToDie] [TimeToEat] [TimeToSleep] [OPT:EatingTimes]"
+					RESET);
 				return (EXIT_FAILURE);
 			}
 			char_index++;
 		}
-		arg_word_counter++;
+		arg_index++;
 	}
 	return (EXIT_SUCCESS);
 }
 
-static inline int invalid_input_handler(int argc, char *argv[])
+/*
+** Validates input arguments: count and format
+*/
+static int	validate_program_input(int argc, char *argv[])
 {
-	int	counter;
-
-	counter = 1;
-	if (!(validate_input(argc)))
+	if (!validate_input(argc))
 	{
 		print_error_exit("Wrong Input!\n"
-						COLOR_SUCCESS"Valid Input is: ./philo [PhilosophersNumber] [TimeToDie] [TimeToEat] [TimeToSleep] [OPT:EatingTimes]"RESET);
+			COLOR_SUCCESS"Valid Input is: ./philo [PhilosophersNumber] "
+			"[TimeToDie] [TimeToEat] [TimeToSleep] [OPT:EatingTimes]"RESET);
 		return (EXIT_FAILURE);
 	}
-	if (invalid_as_numbers(argc, argv , counter))
+	if (validate_numeric_arguments(argc, argv))
 		return (EXIT_FAILURE);
-
 	return (EXIT_SUCCESS);
 }
 
-int	main (int argc, char *argv[])
+int	main(int argc, char *argv[])
 {
-	if (invalid_input_handler(argc, argv))
+	if (validate_program_input(argc, argv))
 		return (EXIT_FAILURE);
 	start_program(argv);
-
 	return (EXIT_SUCCESS);
 }
