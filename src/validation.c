@@ -6,7 +6,7 @@
 /*   By: ahirzall <ahirzall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 23:52:24 by ahirzall          #+#    #+#             */
-/*   Updated: 2025/07/28 23:52:25 by ahirzall         ###   ########.fr       */
+/*   Updated: 2025/07/29 01:38:47 by ahirzall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,5 @@
 
 int	validate_input(int argc)
 {
-	return (argc == 5  || argc == 6);
+	return (argc == 5 || argc == 6);
 }

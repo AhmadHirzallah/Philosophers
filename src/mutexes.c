@@ -6,26 +6,26 @@
 /*   By: ahirzall <ahirzall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 23:52:01 by ahirzall          #+#    #+#             */
-/*   Updated: 2025/07/28 23:52:02 by ahirzall         ###   ########.fr       */
+/*   Updated: 2025/07/29 01:38:47 by ahirzall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static int handle_mutex_error(int status, t_operation_code opcode)
+static int	handle_mutex_error(int status, t_operation_code opcode)
 {
 	if (0 == status)
 		return (EXIT_SUCCESS);
 	if (EINVAL == status && (LOCK == opcode || UNLOCK == opcode))
-		return (print_error_with_return("The value specified by mutex is invalid."));
+		return (print_error_with_return("Invalid mutex value."));
 	else if (EINVAL == status && INIT == opcode)
-		return (print_error_with_return("The value specified by attr is invalid."));
+		return (print_error_with_return("Invalid attr value."));
 	else if (EDEADLK == status)
-		return (print_error_with_return("A deadlock would occur if the thread blocked waiting for mutex."));
+		return (print_error_with_return("Deadlock would occur."));
 	else if (EPERM == status)
-		return (print_error_with_return("The current thread does not hold a lock on mutex."));
+		return (print_error_with_return("Thread does not hold lock."));
 	else if (ENOMEM == status)
-		return (print_error_with_return("The process cannot allocate enough memory to create another mutex."));
+		return (print_error_with_return("Cannot allocate memory."));
 	else if (EBUSY == status)
 		return (print_error_with_return("Mutex is locked"));
 	else
@@ -45,4 +45,3 @@ int	safe_mutex_handle(pthread_mutex_t *mutex, t_operation_code opcode)
 	else
 		return (print_error_with_return("Wrong opcode for mutex handle"));
 }
-

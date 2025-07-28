@@ -6,22 +6,22 @@
 /*   By: ahirzall <ahirzall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 23:51:52 by ahirzall          #+#    #+#             */
-/*   Updated: 2025/07/29 01:27:22 by ahirzall         ###   ########.fr       */
+/*   Updated: 2025/07/29 02:01:30 by ahirzall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef	PHILO_H
-# define	PHILO_H
+#ifndef PHILO_H
+# define PHILO_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <stdbool.h>
-#include <pthread.h>
-#include <sys/time.h>
-#include <limits.h>
-#include <errno.h>
-#include <string.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <stdbool.h>
+# include <pthread.h>
+# include <sys/time.h>
+# include <limits.h>
+# include <errno.h>
+# include <string.h>
 
 # define RESET "\033[0m"
 # define BOLD "\033[1m"
@@ -66,14 +66,14 @@ typedef enum e_operation_code
 	DETACH
 }			t_operation_code;
 
-typedef	struct s_table			t_table;
-typedef	struct s_philosopher	t_philosopher;
+typedef struct s_table			t_table;
+typedef struct s_philosopher	t_philosopher;
 
-typedef	struct	s_fork
+typedef struct s_fork
 {
 	pthread_mutex_t	fork;
 	int				fork_id;
-}							t_fork;
+}	t_fork;
 
 typedef struct s_philosopher
 {
@@ -85,10 +85,9 @@ typedef struct s_philosopher
 	t_fork		*second_fork;
 	pthread_t	thread_id;
 	t_table		*table_ptr;
+}	t_philosopher;
 
-}				t_philosopher;
-
-typedef	struct s_table
+typedef struct s_table
 {
 	long			philos_count;
 	long			time_to_be_died;
@@ -104,31 +103,50 @@ typedef	struct s_table
 	pthread_t		monitor_thread;
 	t_fork			*forks;
 	t_philosopher	*philosophers_arr;
-}					t_table;
+}	t_table;
 
-
-int	validate_input(int argc);
+int		validate_input(int argc);
 void	print_error(const char *error);
 void	print_error_exit(const char *error);
 void	print_success(const char *message);
 void	print_info(const char *message);
-int	start_program(char *argv[]);
+int		start_program(char *argv[]);
 long	ft_atol(const char *str);
-int	table_initialization(t_table *table, char **argv);
+int		table_initialization(t_table *table, char **argv);
 void	parse_simulation_parameters(t_table *table, char **argv);
 void	*safe_malloc(size_t size);
-int	print_error_with_return(const char *error);
-int	safe_mutex_handle(pthread_mutex_t *mutex, t_operation_code opcode);
-int	safe_thread_handle(pthread_t *thread, void *(*foo)(void *), void *data, t_operation_code opcode);
-int	start_philos_dinner_sim(t_table *table);
+int		print_error_with_return(const char *error);
+int		safe_mutex_handle(pthread_mutex_t *mutex, t_operation_code opcode);
+int		safe_thread_handle(pthread_t *thread, void *(*foo)(void *), void *data,
+			t_operation_code opcode);
+int		start_philos_dinner_sim(t_table *table);
 void	clean_table(t_table *table);
 void	assign_forks(t_philosopher *philo, t_fork *forks, int i);
 long	get_time(void);
 void	ft_usleep(long time);
 void	safe_print(t_philosopher *philo, char *action);
-int	philosopher_died(t_philosopher *philo);
+int		philosopher_died(t_philosopher *philo);
 void	*philosopher_routine(void *arg);
 void	*monitor_routine(void *arg);
-
+int		create_philosopher_threads(t_table *table);
+int		create_monitor_thread(t_table *table);
+int		signal_simulation_start(t_table *table);
+int		wait_for_philosopher_threads(t_table *table);
+int		wait_for_monitor_thread(t_table *table);
+void	wait_for_simulation_start(t_philosopher *philo);
+int		is_simulation_ended(t_philosopher *philo);
+void	print_death_message(t_philosopher *philo);
+int		handle_single_philosopher(t_philosopher *philo);
+int		acquire_first_fork(t_philosopher *philo);
+int		acquire_second_fork(t_philosopher *philo);
+void	update_meal_data(t_philosopher *philo);
+void	initialize_simulation_control(t_table *table);
+int		initialize_mutexes(t_table *table);
+int		initialize_fork_mutexes(t_table *table);
+void	initialize_philosopher_properties(t_table *table, int philo_index);
+int		initialize_philosophers(t_table *table);
+void	wait_for_monitor_start(t_table *table);
+int		should_end_simulation(t_table *table);
+int		check_philosophers_death(t_table *table);
 
 #endif

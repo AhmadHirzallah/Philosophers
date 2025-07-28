@@ -6,82 +6,11 @@
 /*   By: ahirzall <ahirzall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 23:52:11 by ahirzall          #+#    #+#             */
-/*   Updated: 2025/07/29 01:27:22 by ahirzall         ###   ########.fr       */
+/*   Updated: 2025/07/29 01:44:50 by ahirzall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-/*
-** Creates and starts all philosopher threads
-*/
-static int	create_philosopher_threads(t_table *table)
-{
-	int	philo_index;
-
-	philo_index = 0;
-	while (philo_index < table->philos_count)
-	{
-		if (safe_thread_handle(&table->philosophers_arr[philo_index].thread_id,
-			philosopher_routine, &table->philosophers_arr[philo_index],
-			CREATE) == EXIT_FAILURE)
-			return (EXIT_FAILURE);
-		philo_index++;
-	}
-	return (EXIT_SUCCESS);
-}
-
-/*
-** Creates and starts the monitor thread
-*/
-static int	create_monitor_thread(t_table *table)
-{
-	if (safe_thread_handle(&table->monitor_thread, monitor_routine,
-		table, CREATE) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
-}
-
-/*
-** Signals all threads to start simulation
-*/
-static int	signal_simulation_start(t_table *table)
-{
-	if (safe_mutex_handle(&table->data_mutex, LOCK) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
-	table->are_all_threads_ready = true;
-	safe_mutex_handle(&table->data_mutex, UNLOCK);
-	return (EXIT_SUCCESS);
-}
-
-/*
-** Waits for all philosopher threads to complete
-*/
-static int	wait_for_philosopher_threads(t_table *table)
-{
-	int	philo_index;
-
-	philo_index = 0;
-	while (philo_index < table->philos_count)
-	{
-		if (safe_thread_handle(&table->philosophers_arr[philo_index].thread_id,
-			NULL, NULL, JOIN) == EXIT_FAILURE)
-			return (EXIT_FAILURE);
-		philo_index++;
-	}
-	return (EXIT_SUCCESS);
-}
-
-/*
-** Waits for monitor thread to complete
-*/
-static int	wait_for_monitor_thread(t_table *table)
-{
-	if (safe_thread_handle(&table->monitor_thread, NULL, NULL, JOIN)
-		== EXIT_FAILURE)
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
-}
 
 /*
 ** Main simulation function that coordinates thread creation and execution
