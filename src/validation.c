@@ -1,4 +1,4 @@
-#include "Philosophers.h"
+#include "philo.h"
 
 int	validate_input(int argc)
 {

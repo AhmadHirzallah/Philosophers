@@ -1,5 +1,5 @@
-#ifndef	PHILOSOPHERS_H
-# define	PHILOSOPHERS_H
+#ifndef	PHILO_H
+# define	PHILO_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,6 +8,7 @@
 #include <pthread.h>
 #include <sys/time.h>
 #include <limits.h>
+#include <errno.h>
 
 // Define color codes
 # define RESET "\033[0m"
@@ -34,6 +35,17 @@
 # define BGCYAN "\033[46m"
 # define BGWHITE "\033[47m"
 # define BGBRIGHTGREEN "\033[102m"
+
+typedef enum e_operation_code
+{
+	INIT,
+	DESTROY,
+	LOCK,
+	UNLOCK,
+	CREATE,
+	JOIN,
+	DETACH
+}			t_operation_code;
 
 typedef	struct s_table			t_table;
 typedef	struct s_philosopher	t_philosopher;
@@ -66,6 +78,8 @@ typedef	struct s_table
 	long			maximum_meals_nbr;
 	long			start_simulation_time;
 	bool			is_simulation_ended;
+	bool			are_all_threads_ready;
+	long			threads_running_counter;
 	t_fork			*forks;
 	t_philosopher	*philosophers_arr;
 }					t_table;
@@ -73,8 +87,16 @@ typedef	struct s_table
 
 int	validate_input(int argc);
 void	print_error(const char *error);
+void	print_error_exit(const char *error);
 int	start_program(char *argv[]);
 long	ft_atol(const char *str);
-void		table_initialization(t_table *table, char **argv);
+int		table_initialization(t_table *table, char **argv);
+void	*safe_malloc(size_t size);
+int	print_error_with_return(const char *error);
+int	safe_mutex_handle(pthread_mutex_t *mutex, t_operation_code opcode);
+int	safe_thread_handle(pthread_t *thread, void *(*foo)(void *), void *data, t_operation_code opcode);
+int		start_philos_dinner_sim(t_table *table);
+void	clean_table(t_table *table);
+
 
 #endif

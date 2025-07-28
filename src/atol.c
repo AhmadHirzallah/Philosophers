@@ -1,4 +1,4 @@
-#include "Philosophers.h"
+#include "philo.h"
 
 static inline int is_space(char c)
 {
@@ -44,7 +44,7 @@ static inline bool calculate_number(const char *str, int *index, long *result)
 
 long	ft_atol(const char *str)
 {
-	long	i;
+	int	i;
 	long	result;
 	long	signal;
 

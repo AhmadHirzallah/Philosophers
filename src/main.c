@@ -1,6 +1,4 @@
-#include "Philosophers.h"
-
-
+#include "philo.h"
 
 static inline int	is_valid_digit(int nbr, int is_first_char)
 {
@@ -41,7 +39,7 @@ static inline int invalid_input_handler(int argc, char *argv[])
 	counter = 1;
 	if (!(validate_input(argc)))
 	{
-		print_error_exit("Wrong Input:\n"
+		print_error_exit("Wrong Input!\n"
 						GREEN"Valid Input is: ./philo [PhilosophersNumber] [TimeToDie] [TimeToEat] [TimeToSleep] [OPT:EatingTimes]"RESET);
 		return (EXIT_FAILURE);
 	}
