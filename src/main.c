@@ -6,7 +6,7 @@
 /*   By: ahirzall <ahirzall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 23:51:57 by ahirzall          #+#    #+#             */
-/*   Updated: 2025/07/28 23:51:58 by ahirzall         ###   ########.fr       */
+/*   Updated: 2025/07/29 01:04:46 by ahirzall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static inline int invalid_as_numbers(int argc, char *argv[], int arg_word_counte
 			if (!(is_valid_digit(argv[arg_word_counter][char_index], (char_index == 0))))
 			{
 				print_error("Error: Invalid Input Not A Number\n"
-							GREEN"Valid Input is: ./philo [PhilosophersNumber] [TimeToDie] [TimeToEat] [TimeToSleep] [OPT:EatingTimes]"RESET);
+							COLOR_SUCCESS"Valid Input is: ./philo [PhilosophersNumber] [TimeToDie] [TimeToEat] [TimeToSleep] [OPT:EatingTimes]"RESET);
 				return (EXIT_FAILURE);
 			}
 			char_index++;
@@ -52,7 +52,7 @@ static inline int invalid_input_handler(int argc, char *argv[])
 	if (!(validate_input(argc)))
 	{
 		print_error_exit("Wrong Input!\n"
-						GREEN"Valid Input is: ./philo [PhilosophersNumber] [TimeToDie] [TimeToEat] [TimeToSleep] [OPT:EatingTimes]"RESET);
+						COLOR_SUCCESS"Valid Input is: ./philo [PhilosophersNumber] [TimeToDie] [TimeToEat] [TimeToSleep] [OPT:EatingTimes]"RESET);
 		return (EXIT_FAILURE);
 	}
 	if (invalid_as_numbers(argc, argv , counter))

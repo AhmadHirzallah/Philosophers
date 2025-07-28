@@ -6,7 +6,7 @@
 /*   By: ahirzall <ahirzall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 23:54:52 by ahirzall          #+#    #+#             */
-/*   Updated: 2025/07/29 00:24:31 by ahirzall         ###   ########.fr       */
+/*   Updated: 2025/07/29 01:04:46 by ahirzall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	ft_usleep(long time)
 void	safe_print(t_philosopher *philo, char *action)
 {
 	long	time;
+	char	*color;
 
 	if (safe_mutex_handle(&philo->table_ptr->print_mutex, LOCK) == EXIT_FAILURE)
 		return;
@@ -57,7 +58,21 @@ void	safe_print(t_philosopher *philo, char *action)
 	if (!philo->table_ptr->is_simulation_ended)
 	{
 		time = get_time() - philo->table_ptr->start_simulation_time;
-		printf("%ld %d %s\n", time, philo->id, action);
+
+		// Choose color based on action
+		if (strstr(action, "fork"))
+			color = COLOR_FORK;
+		else if (strstr(action, "eating"))
+			color = COLOR_EAT;
+		else if (strstr(action, "sleeping"))
+			color = COLOR_SLEEP;
+		else if (strstr(action, "thinking"))
+			color = COLOR_THINK;
+		else
+			color = WHITE;
+
+		printf(COLOR_TIME"%ld"RESET" "COLOR_ID"%d"RESET" %s%s"RESET"\n",
+			   time, philo->id, color, action);
 	}
 
 	safe_mutex_handle(&philo->table_ptr->print_mutex, UNLOCK);
@@ -83,10 +98,11 @@ int	philosopher_died(t_philosopher *philo)
 		philo->table_ptr->is_simulation_ended = true;
 		safe_mutex_handle(&philo->table_ptr->data_mutex, UNLOCK);
 
-		// Print death message with print mutex protection
+		// Print death message with print mutex protection and colors
 		if (safe_mutex_handle(&philo->table_ptr->print_mutex, LOCK) == EXIT_FAILURE)
 			return (1);
-		printf("%ld %d died\n", get_time() - philo->table_ptr->start_simulation_time, philo->id);
+		printf(COLOR_TIME"%ld"RESET" "COLOR_ID"%d"RESET" "COLOR_DEATH"died"RESET"\n",
+			   get_time() - philo->table_ptr->start_simulation_time, philo->id);
 		safe_mutex_handle(&philo->table_ptr->print_mutex, UNLOCK);
 
 		return (1);

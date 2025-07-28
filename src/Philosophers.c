@@ -6,7 +6,7 @@
 /*   By: ahirzall <ahirzall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 23:52:11 by ahirzall          #+#    #+#             */
-/*   Updated: 2025/07/29 00:24:31 by ahirzall         ###   ########.fr       */
+/*   Updated: 2025/07/29 01:04:46 by ahirzall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,12 +93,15 @@ int	start_program(char *argv[])
 	if (table_initialization(&table, argv) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 
+	print_simulation_start(table.philos_count);
+
 	if (start_philos_dinner_sim(&table) == EXIT_FAILURE)
 	{
 		clean_table(&table);
 		return (EXIT_FAILURE);
 	}
 
+	print_simulation_end();
 	clean_table(&table);
 	return (EXIT_SUCCESS);
 }

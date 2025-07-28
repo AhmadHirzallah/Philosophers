@@ -6,7 +6,7 @@
 /*   By: ahirzall <ahirzall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 23:51:52 by ahirzall          #+#    #+#             */
-/*   Updated: 2025/07/29 00:24:31 by ahirzall         ###   ########.fr       */
+/*   Updated: 2025/07/29 01:04:46 by ahirzall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,32 +21,43 @@
 #include <sys/time.h>
 #include <limits.h>
 #include <errno.h>
+#include <string.h>
 
-// Define color codes
+// Professional Color Scheme for Philosophers
 # define RESET "\033[0m"
 # define BOLD "\033[1m"
+# define DIM "\033[2m"
+# define ITALIC "\033[3m"
 # define UNDERLINE "\033[4m"
 
-// Foreground colors
-# define BLACK "\033[30m"
-# define RED "\033[31m"
-# define GREEN "\033[92m"
-# define YELLOW "\033[93m"
-# define BLUE "\033[94m"
-# define MAGENTA "\033[95m"
-# define CYAN "\033[96m"
-# define WHITE "\033[37m"
+// Primary Colors
+# define RED "\033[31m"           // Errors and death
+# define GREEN "\033[32m"         // Success and valid input
+# define YELLOW "\033[33m"        // Warnings and thinking
+# define BLUE "\033[34m"          // Information and actions
+# define MAGENTA "\033[35m"       // Philosopher IDs
+# define CYAN "\033[36m"          // Time stamps
+# define WHITE "\033[37m"         // General text
 
-// Background colors
-# define BGBLACK "\033[40m"
-# define BGRED "\033[41m"
-# define BGGREEN "\033[42m"
-# define BGYELLOW "\033[43m"
-# define BGBLUE "\033[44m"
-# define BGMAGENTA "\033[45m"
-# define BGCYAN "\033[46m"
-# define BGWHITE "\033[47m"
-# define BGBRIGHTGREEN "\033[102m"
+// Bright Colors for Better Visibility
+# define BRIGHT_RED "\033[91m"    // Critical errors
+# define BRIGHT_GREEN "\033[92m"  // Success messages
+# define BRIGHT_YELLOW "\033[93m" // Thinking state
+# define BRIGHT_BLUE "\033[94m"   // Eating state
+# define BRIGHT_MAGENTA "\033[95m"// Sleeping state
+# define BRIGHT_CYAN "\033[96m"   // Fork actions
+# define BRIGHT_WHITE "\033[97m"  // Timestamps
+
+// Semantic Color Definitions for Actions
+# define COLOR_FORK BRIGHT_CYAN     // Fork taking
+# define COLOR_EAT BRIGHT_BLUE      // Eating
+# define COLOR_SLEEP BRIGHT_MAGENTA // Sleeping
+# define COLOR_THINK BRIGHT_YELLOW  // Thinking
+# define COLOR_DEATH BRIGHT_RED     // Death
+# define COLOR_TIME CYAN            // Timestamps
+# define COLOR_ID MAGENTA           // Philosopher IDs
+# define COLOR_SUCCESS BRIGHT_GREEN // Success messages
+# define COLOR_ERROR BRIGHT_RED     // Error messages
 
 typedef enum e_operation_code
 {
@@ -103,6 +114,10 @@ typedef	struct s_table
 int	validate_input(int argc);
 void	print_error(const char *error);
 void	print_error_exit(const char *error);
+void	print_success(const char *message);
+void	print_info(const char *message);
+void	print_simulation_start(long philos_count);
+void	print_simulation_end(void);
 int	start_program(char *argv[]);
 long	ft_atol(const char *str);
 int		table_initialization(t_table *table, char **argv);
