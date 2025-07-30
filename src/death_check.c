@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   death_check.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahmad <ahmad@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ahirzall <ahirzall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 01:52:00 by ahirzall          #+#    #+#             */
-/*   Updated: 2025/07/30 09:05:13 by ahmad            ###   ########.fr       */
+/*   Updated: 2025/07/30 16:19:33 by ahirzall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	has_philosopher_died(t_philosopher *philo)
 	long	time_since_last_meal;
 
 	time_since_last_meal = get_time() - philo->last_meal_time;
-	return (time_since_last_meal >= philo->table_ptr->time_to_be_died);
+	return (time_since_last_meal > philo->table_ptr->time_to_be_died);
 }
 
 /*

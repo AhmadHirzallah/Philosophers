@@ -1,15 +1,12 @@
-/* *************************************************	return (1);
-}
-
-void	update_meal_tracking(t_philosopher *philo)****************** */
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   fork_handling.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahirzall <ahirzall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/29 01:53:00 by ahirzall          #+#    #+#             */
-/*   Updated: 2025/07/29 01:57:15 by ahirzall         ###   ########.fr       */
+/*   Created: 2025/07/30 15:39:35 by ahirzall          #+#    #+#             */
+/*   Updated: 2025/07/30 16:00:56 by ahirzall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +16,7 @@ int	handle_single_philosopher(t_philosopher *philo)
 {
 	if (philo->table_ptr->philos_count == 1)
 	{
-		ft_usleep(philo->table_ptr->time_to_be_died);
+		ft_usleep_interruptible(philo, philo->table_ptr->time_to_be_died);
 		safe_mutex_handle(&philo->first_fork->fork, UNLOCK);
 		return (1);
 	}

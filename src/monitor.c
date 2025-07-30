@@ -6,7 +6,7 @@
 /*   By: ahirzall <ahirzall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 01:40:00 by ahirzall          #+#    #+#             */
-/*   Updated: 2025/07/29 02:17:09 by ahirzall         ###   ########.fr       */
+/*   Updated: 2025/07/30 16:19:33 by ahirzall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	*monitor_routine(void *arg)
 			end_simulation(table);
 			return (NULL);
 		}
-		usleep(1000);
+		usleep(10);
 	}
 	return (NULL);
 }

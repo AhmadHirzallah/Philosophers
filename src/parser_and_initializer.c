@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_and_initializer.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahmad <ahmad@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ahirzall <ahirzall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 23:52:04 by ahirzall          #+#    #+#             */
-/*   Updated: 2025/07/30 07:48:33 by ahmad            ###   ########.fr       */
+/*   Updated: 2025/07/30 15:52:13 by ahirzall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /*
 ** Parses command line arguments and fills table configuration
 */
-void	parse_simulation_parameters(t_table *table, char **argv)
+int	parse_simulation_parameters(t_table *table, char **argv)
 {
 	table->philos_count = ft_atol(argv[1]);
 	table->time_to_be_died = ft_atol(argv[2]);
@@ -25,6 +25,15 @@ void	parse_simulation_parameters(t_table *table, char **argv)
 		table->maximum_meals_nbr = ft_atol(argv[5]);
 	else
 		table->maximum_meals_nbr = -1;
+	if (table->philos_count == 0 || table->time_to_be_died == 0
+		|| table->time_to_eat == 0 || table->time_to_sleep == 0
+		|| table->maximum_meals_nbr == 0)
+	{
+		print_error_with_return("Wrong Input! Not Positive Numbers\n"
+			COLOR_SUCCESS"Enter Only Positive ( > 0 ) Numbers"RESET);
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
 }
 
 /*
@@ -62,7 +71,8 @@ static int	complete_initialization(t_table *table)
 
 int	table_initialization(t_table *table, char **argv)
 {
-	parse_simulation_parameters(table, argv);
+	if (parse_simulation_parameters(table, argv) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
 	initialize_simulation_control(table);
 	if (setup_initialization_order(table) == EXIT_FAILURE)
 		return (EXIT_FAILURE);

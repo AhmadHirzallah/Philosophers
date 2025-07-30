@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahmad <ahmad@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ahirzall <ahirzall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 23:51:52 by ahirzall          #+#    #+#             */
-/*   Updated: 2025/07/30 08:51:40 by ahmad            ###   ########.fr       */
+/*   Updated: 2025/07/30 15:59:26 by ahirzall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ int		table_initialization(t_table *table, char **argv);
 /*
 ** Parses command line arguments and fills table configuration
 */
-void	parse_simulation_parameters(t_table *table, char **argv);
+int		parse_simulation_parameters(t_table *table, char **argv);
 /*
 ** Safe malloc wrapper with error handling
 */
@@ -167,15 +167,15 @@ int		start_philos_dinner_sim(t_table *table);
 void	clean_table(t_table *table);
 /**
  * DEADLOCK PREVENTION STRATEGY - Even/Odd Fork Assignment
- * 
- * PROBLEM: 
+ *
+ * PROBLEM:
  * 	- Without strategy, all philosophers pick forks in same order → DEADLOCK
- * 
- * SOLUTION: 
+ *
+ * SOLUTION:
  *	- Alternate fork acquisition order based on philosopher ID parity
- * 
+ *
  * CIRCULAR TABLE LAYOUT (4 philosophers example):
- * 
+ *
  *                    Fork[0]
  *         Philo[0]============Philo[1]
  *         (ID=1)              (ID=2)
@@ -187,65 +187,66 @@ void	clean_table(t_table *table);
  *         Philo[3]============Philo[2]
  *         (ID=4)              (ID=3)
  *                    Fork[2]
- * 
+ *
  * Table arrangement: Each philosopher sits between two forks
  * - Philo[0] sits between Fork[0] and Fork[1]
- * - Philo[1] sits between Fork[1] and Fork[2]  
+ * - Philo[1] sits between Fork[1] and Fork[2]
  * - Philo[2] sits between Fork[2] and Fork[3]
  * - Philo[3] sits between Fork[3] and Fork[0]
- * 
+ *
  * FORK ASSIGNMENT ALGORITHM:
  * if (philo->id % 2 == 0) // EVEN ID philosophers
  *     first_fork = &forks[philosopher_index];  	           // Own fork
  *     second_fork = &forks[(philosopher_index + 1) % total];  // Next fork
- * else // ODD ID philosophers  
+ * else // ODD ID philosophers
  *     first_fork = &forks[(philosopher_index + 1) % total];   // Next fork
  *     second_fork = &forks[philosopher_index];                // Own fork
- * 
+ *
  * DETAILED FORK ASSIGNMENTS (4 philosophers):
  * - Philosopher ID=1 (index=0, ODD) :  first_fork=Fork[1], second_fork=Fork[0]
  * - Philosopher ID=2 (index=1, EVEN):  first_fork=Fork[1], second_fork=Fork[2]
  * - Philosopher ID=3 (index=2, ODD) :  first_fork=Fork[3], second_fork=Fork[2]
  * - Philosopher ID=4 (index=3, EVEN):  first_fork=Fork[3], second_fork=Fork[0]
- * 
+ *
  * ACQUISITION ORDER SUMMARY:
  * - Philosopher ID=1 (ODD):  Fork[1] → Fork[0]
  * - Philosopher ID=2 (EVEN): Fork[1] → Fork[2]
  * - Philosopher ID=3 (ODD):  Fork[3] → Fork[2]
  * - Philosopher ID=4 (EVEN): Fork[3] → Fork[0]
- * 
+ *
  * DEADLOCK PREVENTION IN ACTION:
  * Step 1: First fork acquisition:اكتساب attempts
  *   - Philo ID=1 & ID=2 both want Fork[1] → CONFLICT (one waits)
  *   - Philo ID=3 & ID=4 both want Fork[3] → CONFLICT (one waits)
  *   - Let's say ID=1 gets Fork[1] and ID=3 gets Fork[3]
- * 
+ *
  * Step 2: Winners proceed to second fork
  *   - Philo ID=1: has Fork[1], wants Fork[0] (available!)
  *   - Philo ID=3: has Fork[3], wants Fork[2] (available!)
  *   - Both can eat simultaneously - NO DEADLOCK!
- * 
+ *
  * Step 3: After eating, forks are released
  *   - Philo ID=1 releases Fork[1] and Fork[0]
  *   - Philo ID=3 releases Fork[3] and Fork[2]
- * 
+ *
  * Step 4: Waiting philosophers can now proceed
  *   - Philo ID=2 can acquire Fork[1] then Fork[2]
  *   - Philo ID=4 can acquire Fork[3] then Fork[0]
- * 
- * KEY INSIGHT: By alternating acquisition:اكتساب order, we break the circular wait
+ *
+ * KEY INSIGHT: By alternating acquisition:اكتساب order,
+ *  we break the circular wait
  * condition that causes deadlock. At least one pair of philosophers can
  * always make progress, ensuring the system never reaches a complete standstill.
  * DEADLOCK PREVENTION STRATEGY - Even/Odd Fork Assignment (5 Philosophers)
- * 
- * PROBLEM: 
+ *
+ * PROBLEM:
  * 	- With odd numbers, more complex patterns but same deadlock risk
- * 
- * SOLUTION: 
+ *
+ * SOLUTION:
  *	- Same alternating fork acquisition strategy works for odd numbers
- * 
+ *
  * CIRCULAR TABLE LAYOUT (5 philosophers example):
- * 
+ *
  *                     Fork[0]
  *         Philo[0]================Philo[1]
  *         (ID=1)                  (ID=2)
@@ -262,61 +263,62 @@ void	clean_table(t_table *table);
  *            ||========================||
  *                   Philo[3]
  *                   (ID=4)
- * 
+ *
  * Table arrangement: Each philosopher sits between two forks
  * - ID 1: Philo[0] sits between Fork[0] and Fork[1]
- * - ID 2: Philo[1] sits between Fork[1] and Fork[2]  
+ * - ID 2: Philo[1] sits between Fork[1] and Fork[2]
  * - ID 3: Philo[2] sits between Fork[2] and Fork[3]
  * - ID 4: Philo[3] sits between Fork[3] and Fork[4]
  * - ID 5: Philo[4] sits between Fork[4] and Fork[0]
- * 
+ *
  * FORK ASSIGNMENT ALGORITHM (same as 4 philosophers):
  * if (philo->id % 2 == 0) // EVEN ID philosophers
  *     first_fork = &forks[philosopher_index];  	           // Own fork
  *     second_fork = &forks[(philosopher_index + 1) % total];  // Next fork
- * else // ODD ID philosophers  
+ * else // ODD ID philosophers
  *     first_fork = &forks[(philosopher_index + 1) % total];   // Next fork
  *     second_fork = &forks[philosopher_index];                // Own fork
- * 
+ *
  * DETAILED FORK ASSIGNMENTS (5 philosophers):
  * - Philosopher ID=1 (index=0, ODD) :  first_fork=Fork[1], second_fork=Fork[0]
  * - Philosopher ID=2 (index=1, EVEN):  first_fork=Fork[1], second_fork=Fork[2]
  * - Philosopher ID=3 (index=2, ODD) :  first_fork=Fork[3], second_fork=Fork[2]
  * - Philosopher ID=4 (index=3, EVEN):  first_fork=Fork[3], second_fork=Fork[4]
  * - Philosopher ID=5 (index=4, ODD) :  first_fork=Fork[0], second_fork=Fork[4]
- * 
+ *
  * ACQUISITION ORDER SUMMARY:
  * - Philosopher ID=1 (ODD):  Fork[1] → Fork[0]
  * - Philosopher ID=2 (EVEN): Fork[1] → Fork[2]
  * - Philosopher ID=3 (ODD):  Fork[3] → Fork[2]
  * - Philosopher ID=4 (EVEN): Fork[3] → Fork[4]
  * - Philosopher ID=5 (ODD):  Fork[0] → Fork[4]
- * 
+ *
  * DEADLOCK PREVENTION IN ACTION (5 philosophers):
  * Step 1: First fork acquisition attempts
  *   - Philo ID=1 & ID=2 both want Fork[1] → CONFLICT (one waits)
  *   - Philo ID=3 & ID=4 both want Fork[3] → CONFLICT (one waits)
  *   - Philo ID=5 wants Fork[0] → NO CONFLICT (gets it immediately)
  *   - Let's say ID=1 gets Fork[1], ID=3 gets Fork[3], ID=5 gets Fork[0]
- * 
+ *
  * Step 2: Winners proceed to second fork
  *   - Philo ID=1: has Fork[1], wants Fork[0] (but ID=5 has it) → WAITS
  *   - Philo ID=3: has Fork[3], wants Fork[2] (available!) → GETS IT
  *   - Philo ID=5: has Fork[0], wants Fork[4] (available!) → GETS IT
  *   - Result: ID=3 and ID=5 can eat, ID=1 waits
- * 
+ *
  * Step 3: After eating, forks are released
  *   - Philo ID=3 releases Fork[3] and Fork[2]
  *   - Philo ID=5 releases Fork[0] and Fork[4]
- * 
+ *
  * Step 4: New opportunities arise
  *   - Philo ID=1: can now get Fork[0] (released by ID=5) → EATS
  *   - Philo ID=2: can now compete for Fork[1] or Fork[2]
  *   - Philo ID=4: can now compete for Fork[3] or Fork[4]
- * 
+ *
  * KEY INSIGHT FOR ODD NUMBERS: Even with odd philosophers, deadlock is still
  * prevented because the alternating pattern ensures at least one philosopher
- * can always make progress. More complex waiting chains but never total deadlock.
+ * can always make progress.
+ *  More complex waiting chains but never total deadlock.
  */
 void	assign_forks(t_philosopher *philo, t_fork *forks, int i);
 /*
@@ -332,7 +334,8 @@ void	ft_usleep(long time);
 */
 char	*ft_strstr(const char *haystack, const char *needle);
 /*
-** Calculates optimal thinking time to prevent starvation for odd number of philosophers
+** Calculates optimal thinking time to prevent
+	starvation for odd number of philosophers
 */
 void	think_time(t_philosopher *philo);
 /*
@@ -431,5 +434,10 @@ int		should_end_simulation(t_table *table);
 ** Checks all philosophers for death
 */
 int		check_philosophers_death(t_table *table);
+void	assign_forks(t_philosopher *philo, t_fork *forks,
+			int philosopher_index);
+long	get_time(void);
+void	ft_usleep(long sleep_time_ms);
+void	ft_usleep_interruptible(t_philosopher *philo, long sleep_time_ms);
 
 #endif

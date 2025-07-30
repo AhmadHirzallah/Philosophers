@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahmad <ahmad@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ahirzall <ahirzall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 23:51:57 by ahirzall          #+#    #+#             */
-/*   Updated: 2025/07/30 07:26:42 by ahmad            ###   ########.fr       */
+/*   Updated: 2025/07/30 15:42:51 by ahirzall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int	is_invalid_numeric_arguments(int argc, char *argv[])
 		while (argv[arg_index][char_index])
 		{
 			if (!(is_valid_character(argv[arg_index][char_index],
-				(char_index == 0))))
+					(char_index == 0))))
 			{
 				print_error("Error: Invalid Input Not A Number\n"
 					COLOR_SUCCESS"Valid Input is: ./philo [PhilosophersNumber] "
@@ -50,7 +50,7 @@ static int	is_invalid_program_input(int argc, char *argv[])
 {
 	if (!(validate_input(argc)))
 	{
-		print_error_exit("Wrong Input!\n"
+		print_error_with_return("Wrong Input!\n"
 			COLOR_SUCCESS"Valid Input is: ./philo [PhilosophersNumber] "
 			"[TimeToDie] [TimeToEat] [TimeToSleep] [OPT:EatingTimes]"RESET);
 		return (EXIT_FAILURE);
