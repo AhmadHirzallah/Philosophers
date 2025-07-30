@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_and_initializer.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahirzall <ahirzall@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ahmad <ahmad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 23:52:04 by ahirzall          #+#    #+#             */
-/*   Updated: 2025/07/29 01:51:19 by ahirzall         ###   ########.fr       */
+/*   Updated: 2025/07/30 07:48:33 by ahmad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,6 @@ static int	allocate_simulation_memory(t_table *table)
 	return (EXIT_SUCCESS);
 }
 
-/*
-** Sets up initialization order
-*/
 static int	setup_initialization_order(t_table *table)
 {
 	if (initialize_mutexes(table) == EXIT_FAILURE)
@@ -56,9 +53,6 @@ static int	setup_initialization_order(t_table *table)
 	return (EXIT_SUCCESS);
 }
 
-/*
-** Completes initialization process
-*/
 static int	complete_initialization(t_table *table)
 {
 	if (initialize_philosophers(table) == EXIT_FAILURE)
@@ -66,9 +60,6 @@ static int	complete_initialization(t_table *table)
 	return (EXIT_SUCCESS);
 }
 
-/*
-** Main table initialization function - coordinates all setup steps
-*/
 int	table_initialization(t_table *table, char **argv)
 {
 	parse_simulation_parameters(table, argv);

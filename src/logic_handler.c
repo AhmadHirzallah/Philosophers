@@ -1,4 +1,7 @@
-/* ************************************************************************** */
+/* ************************	return (1);
+}
+
+static void	philosopher_sleep(t_philosopher *philo)******************************************* */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   logic_handler.c                                    :+:      :+:    :+:   */
@@ -12,9 +15,6 @@
 
 #include "philo.h"
 
-/*
-** Handles eating process including fork acquisition and meal tracking
-*/
 static int	philosopher_eat(t_philosopher *philo)
 {
 	if (!acquire_first_fork(philo))
@@ -31,9 +31,6 @@ static int	philosopher_eat(t_philosopher *philo)
 	return (1);
 }
 
-/*
-** Handles sleeping process with safety checks
-*/
 static int	philosopher_sleep(t_philosopher *philo)
 {
 	if (is_simulation_ended(philo))
@@ -43,9 +40,6 @@ static int	philosopher_sleep(t_philosopher *philo)
 	return (1);
 }
 
-/*
-** Handles thinking process with safety checks
-*/
 static int	philosopher_think(t_philosopher *philo)
 {
 	if (is_simulation_ended(philo))
@@ -54,9 +48,6 @@ static int	philosopher_think(t_philosopher *philo)
 	return (1);
 }
 
-/*
-** Main philosopher routine - coordinates eating, sleeping, thinking cycle
-*/
 void	*philosopher_routine(void *arg)
 {
 	t_philosopher	*philo;

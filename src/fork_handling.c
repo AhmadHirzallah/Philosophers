@@ -1,4 +1,7 @@
-/* ************************************************************************** */
+/* *************************************************	return (1);
+}
+
+void	update_meal_tracking(t_philosopher *philo)****************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   fork_handling.c                                    :+:      :+:    :+:   */
@@ -12,9 +15,6 @@
 
 #include "philo.h"
 
-/*
-** Handles special case for single philosopher
-*/
 int	handle_single_philosopher(t_philosopher *philo)
 {
 	if (philo->table_ptr->philos_count == 1)
@@ -26,9 +26,6 @@ int	handle_single_philosopher(t_philosopher *philo)
 	return (0);
 }
 
-/*
-** Attempts to acquire first fork with safety checks
-*/
 int	acquire_first_fork(t_philosopher *philo)
 {
 	if (safe_mutex_handle(&philo->first_fork->fork, LOCK) == EXIT_FAILURE)
@@ -42,9 +39,6 @@ int	acquire_first_fork(t_philosopher *philo)
 	return (1);
 }
 
-/*
-** Attempts to acquire second fork with safety checks
-*/
 int	acquire_second_fork(t_philosopher *philo)
 {
 	if (safe_mutex_handle(&philo->second_fork->fork, LOCK) == EXIT_FAILURE)
@@ -71,8 +65,10 @@ void	update_meal_data(t_philosopher *philo)
 		return ;
 	philo->last_meal_time = get_time();
 	philo->eaten_meals_counter++;
-	if (philo->table_ptr->maximum_meals_nbr != -1
-		&& philo->eaten_meals_counter >= philo->table_ptr->maximum_meals_nbr)
+	if ((philo->table_ptr->maximum_meals_nbr != -1)
+		&& (philo->eaten_meals_counter >= philo->table_ptr->maximum_meals_nbr))
+	{
 		philo->is_full = true;
+	}
 	safe_mutex_handle(&philo->table_ptr->data_mutex, UNLOCK);
 }

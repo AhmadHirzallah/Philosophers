@@ -1,4 +1,7 @@
-/* ************************************************************************** */
+/* *************************	return (EXIT_SUCCESS);
+}
+
+int	initialize_forks(t_table *table)****************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   initialization.c                                   :+:      :+:    :+:   */
@@ -12,9 +15,6 @@
 
 #include "philo.h"
 
-/*
-** Initializes simulation control variables
-*/
 void	initialize_simulation_control(t_table *table)
 {
 	table->is_simulation_ended = false;
@@ -23,9 +23,6 @@ void	initialize_simulation_control(t_table *table)
 	table->start_simulation_time = get_time();
 }
 
-/*
-** Initializes all mutexes for the simulation
-*/
 int	initialize_mutexes(t_table *table)
 {
 	if (safe_mutex_handle(&table->print_mutex, INIT) == EXIT_FAILURE)
@@ -35,9 +32,6 @@ int	initialize_mutexes(t_table *table)
 	return (EXIT_SUCCESS);
 }
 
-/*
-** Initializes all fork mutexes and assigns fork IDs
-*/
 int	initialize_fork_mutexes(t_table *table)
 {
 	int	fork_index;
@@ -47,16 +41,15 @@ int	initialize_fork_mutexes(t_table *table)
 	{
 		if (safe_mutex_handle(&table->forks[fork_index].fork, INIT)
 			== EXIT_FAILURE)
+		{
 			return (EXIT_FAILURE);
+		}
 		table->forks[fork_index].fork_id = fork_index;
 		fork_index++;
 	}
 	return (EXIT_SUCCESS);
 }
 
-/*
-** Initializes individual philosopher properties
-*/
 void	initialize_philosopher_properties(t_table *table, int philo_index)
 {
 	table->philosophers_arr[philo_index].table_ptr = table;
@@ -69,9 +62,6 @@ void	initialize_philosopher_properties(t_table *table, int philo_index)
 		table->forks, philo_index);
 }
 
-/*
-** Initializes all philosophers in the simulation
-*/
 int	initialize_philosophers(t_table *table)
 {
 	int	philo_index;

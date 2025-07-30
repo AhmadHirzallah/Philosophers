@@ -3,19 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahirzall <ahirzall@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ahmad <ahmad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 01:50:00 by ahirzall          #+#    #+#             */
-/*   Updated: 2025/07/29 02:17:09 by ahirzall         ###   ########.fr       */
+/*   Updated: 2025/07/30 09:33:01 by ahmad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-/*
-** Assigns fork pointers to philosopher based on even/odd strategy to prevent
-** deadlock
-*/
 void	assign_forks(t_philosopher *philo, t_fork *forks, int philosopher_index)
 {
 	int	total_philosophers;
@@ -35,9 +31,6 @@ void	assign_forks(t_philosopher *philo, t_fork *forks, int philosopher_index)
 	}
 }
 
-/*
-** Gets current time in milliseconds
-*/
 long	get_time(void)
 {
 	struct timeval	current_time;
@@ -47,9 +40,6 @@ long	get_time(void)
 	return ((current_time.tv_sec * 1000) + (current_time.tv_usec / 1000));
 }
 
-/*
-** Precise sleep function using microsleep in a loop
-*/
 void	ft_usleep(long sleep_time_ms)
 {
 	long	start_time;
@@ -59,9 +49,47 @@ void	ft_usleep(long sleep_time_ms)
 		usleep(100);
 }
 
-/*
-** Waits for all threads to be ready before starting philosopher routine
-*/
+char	*ft_strstr(const char *haystack, const char *needle)
+{
+	int	i;
+	int	j;
+
+	if (!haystack || !needle)
+		return (NULL);
+	if (*needle == '\0')
+		return ((char *)haystack);
+	i = 0;
+	while (haystack[i])
+	{
+		j = 0;
+		while (needle[j] && (haystack[i + j] == needle[j]))
+			j++;
+		if (needle[j] == '\0')
+			return ((char *)&haystack[i]);
+		i++;
+	}
+	return (NULL);
+}
+
+void	think_time(t_philosopher *philo)
+{
+	long	time_to_think;
+	long	time_to_eat;
+	long	time_to_sleep;
+
+	time_to_eat = philo->table_ptr->time_to_eat;
+	time_to_sleep = philo->table_ptr->time_to_sleep;
+	if (philo->table_ptr->philos_count % 2 == 0)
+		return ;
+	time_to_think = (time_to_eat * 2) - time_to_sleep;
+	if (time_to_think < 0)
+		time_to_think = 0;
+	if (time_to_think > 600)
+		time_to_think = 200;
+	if (time_to_think > 0)
+		ft_usleep(time_to_think);
+}
+
 void	wait_for_simulation_start(t_philosopher *philo)
 {
 	while (1)
@@ -79,16 +107,14 @@ void	wait_for_simulation_start(t_philosopher *philo)
 	}
 }
 
-/*
-** Checks if simulation has ended
-*/
 int	is_simulation_ended(t_philosopher *philo)
 {
 	int	ended;
 
 	if (safe_mutex_handle(&philo->table_ptr->data_mutex, LOCK) == EXIT_FAILURE)
-		return (1);
+		return (EXIT_FAILURE);
 	ended = philo->table_ptr->is_simulation_ended;
-	safe_mutex_handle(&philo->table_ptr->data_mutex, UNLOCK);
+	if (safe_mutex_handle(&philo->table_ptr->data_mutex, UNLOCK) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
 	return (ended);
 }
